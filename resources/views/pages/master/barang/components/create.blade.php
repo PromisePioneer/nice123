@@ -13,7 +13,7 @@
             <div class="modal-body">
                 <form id="form-create" @submit.prevent="save()">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="mb-10">
                                 <label class="required form-label">Nama</label>
                                 <input type="text" class="form-control form-control-solid" name="nama" placeholder="Nama barang"/>
@@ -22,27 +22,34 @@
                         <div class="col-md-6">
                             <div class="mb-10">
                                 <label class="required form-label">Distributor</label>
-                                <select class="form-select form-select-solid"
-                                        data-control="select2"
-                                        data-placeholder="Pilih Distributor"
-                                        name="dist_id">
-                                    <option></option>
+                                <select class="form-select form-select-solid" name="dist_id">
+                                    <option>-- Pilih Distributor --</option>
                                     <template x-for="row in distributor" :key="row.id">
-                                    <option :value="row.id" x-text="row.nama"></option>
+                                    <option :value="row.id" x-text="row.nama_distributor"></option>
                                     </template>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-10">
-                                <label class="required form-label">Kuantitas</label>
-                                <input type="number" class="form-control form-control-solid" name="qty" placeholder="Kuantitas"/>
+                                <label class="required form-label">Harga</label>
+                                <input type="number" class="form-control form-control-solid" name="harga" placeholder="Harga"/>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-10">
-                                <label class="required form-label">Harga</label>
-                                <input type="number" class="form-control form-control-solid" name="harga_satuan" placeholder="Harga"/>
+                                <label class="required form-label">Stok</label>
+                                <input type="number" class="form-control form-control-solid" name="stok_barang" placeholder="Stok Barang"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-10">
+                                <label class="required form-label">Type</label>
+                                <select class="form-select form-select-solid" name="type">
+                                    <option>-- Pilih Type --</option>
+                                    <option value="Masuk">Barang Masuk</option>
+                                    <option value="Keluar">Barang Keluar</option>
+                                </select>
                             </div>
                         </div>
                     </div>

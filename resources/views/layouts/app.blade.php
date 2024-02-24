@@ -55,7 +55,7 @@
                                     <div class="menu-item px-3">
                                         <div class="menu-content d-flex align-items-center px-3">
                                             <div class="symbol symbol-50px me-5">
-                                               
+
                                             </div>
                                             <div class="d-flex flex-column">
                                                 <div class="fw-bolder d-flex align-items-center fs-5">{{ Auth::user()->name }}
@@ -198,7 +198,39 @@
                                     </a>
                                 </div>
                             </div>
-                        </div>                         
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-content pt-8 pb-2">
+                                <span class="menu-section text-muted text-uppercase fs-8 ls-1">Transaksi</span>
+                            </div>
+                        </div>
+                        <div data-kt-menu-trigger="click" class="menu-item menu-accordion ">
+									<span class="menu-link">
+										<span class="menu-icon">
+											<i class="bi bi-bag-check-fill fs-2"></i>
+										</span>
+										<span class="menu-title">Laporan</span>
+										<span class="menu-arrow"></span>
+									</span>
+                            <div class="menu-sub menu-sub-accordion menu-active-bg">
+                                <div class="menu-item">
+                                    <a class="menu-link " href="{{ url('laporan/barang-masuk') }}">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+                                        <span class="menu-title">Laporan Barang Masuk</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a class="menu-link" href="{{ url('transaksi/barang-keluar') }}">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+                                        <span class="menu-title">Laporan Barang Keluar</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

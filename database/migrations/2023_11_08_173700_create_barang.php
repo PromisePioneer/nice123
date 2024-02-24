@@ -19,9 +19,8 @@ return new class extends Migration
                 ->references('id')
                 ->on('distributor')
                 ->onDelete('cascade');
-            $table->double('qty');
-            $table->double('harga_satuan');
-            $table->double('total');
+            $table->double('harga');
+            $table->double('stok_barang');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')

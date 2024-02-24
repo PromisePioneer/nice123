@@ -19,8 +19,6 @@
                     </ul>
                 </div>
             </div>
-            <!--end::Header-->
-            <!--begin::Body-->
             <div class="card-body py-3">
                 @include('pages.barang-masuk.components.create')
                 @include('pages.barang-masuk.components.edit')
@@ -32,9 +30,10 @@
                     <thead>
                     <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200">
                         <td>No</td>
+                        <td>No.Transaksi</td>
+                        <td>Nama Distributor</td>
                         <td>Nama Barang</td>
-                        <td>Tanggal</td>
-                        <td>Kuantitas</td>
+                        <td>Qty</td>
                         <td>Harga</td>
                         <td>Total</td>
                         <td>User</td>
@@ -64,10 +63,11 @@
                     <template x-for="(row,index) in barangMasuk?.data">
                         <tr>
                             <td x-text="startIndex + index++"></td>
-                            <td x-text="`${row.barang.nama}`"></td>
-                            <td x-text="row.tanggal"></td>
+                            <td x-text="row.no"></td>
+                            <td x-text="row.distributor.nama_distributor"></td>
+                            <td x-text="row.distributor.nama_barang"></td>
                             <td x-text="row.qty"></td>
-                            <td x-text="row.harga_satuan"></td>
+                            <td x-text="row.distributor.harga_modal"></td>
                             <td x-text="row.total"></td>
                             <td>
                                 <span class="badge bg-warning" x-text="row.user.name"></span>
@@ -87,18 +87,26 @@
                                     <button type="button" class="badge bg-success">Disetujui</button>
                                 </td>
                             </template>
-                            <td>
-                                <template x-if="row.status === 0">
-                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-edit" @click="edit(row.id)">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
+                            <template x-if="row.status === 0">
+                                <td>
+                                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-edit" @click="edit(row.id)">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" @click="destroy(row.id)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                    </td>
                                 </template>
-                                <template x-if="row.status === 0">
-                                <button class="btn btn-danger btn-sm" @click="destroy(row.id)">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                                </template>
-                            </td>
+                            <template x-if="row.status === 1">
+                                <td>
+                                    <button class="btn btn-danger btn-sm" @click="destroy(row.id)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                    <a class="btn btn-info btn-sm" :href="`/transaksi/barang-masuk/invoice/${row.id}`" >
+                                        <i class="bi bi-printer"></i>
+                                    </a>
+                                </td>
+                            </template>
                         </tr>
                     </template>
                     </tbody>

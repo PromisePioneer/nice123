@@ -23,7 +23,11 @@ class DistributorController extends Controller
 
     public function search(Request $request)
     {
-        $perm = Distributor::where('nama', 'like', '%'. $request->search . '%')->get();
+        $perm = Distributor::where('nama_distributor', 'like', '%'. $request->search . '%')
+                ->orWhere('nama_barang', '%' . $request->search . '%')
+                ->orWhere('harga', '%' . $request->search . '%')
+                ->orWhere('harga', '%' . $request->search . '%')
+                ->get();
         return response()->json($perm);
     }
 

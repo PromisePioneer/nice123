@@ -10,16 +10,6 @@ use App\Http\Controllers\BarangKeluarController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::get('/', function () {
     return view('welcome');
@@ -45,11 +35,14 @@ Route::middleware('web')->group(function () {
         Route::get('/', 'index');
         Route::get('/data', 'data');
         Route::get('/data-barang', 'barangData');
+        Route::get('/data-distributor', 'distributorData');
         Route::get('search', 'search');
         Route::post('/', 'store');
+        Route::get('/showDistributorDetail/{distributor}', 'showDistributorDetail');
         Route::get('/{barangMasuk}', 'edit');
         Route::put('/{barangMasuk}','update');
         Route::delete('/{barangMasuk}','destroy');
+        Route::get('/invoice/{barangMasuk}', 'invoice');
         Route::post('/update-status/{barangMasuk}', 'updateStatus');
         Route::get('/cetak-laporan/{tglAwal}/{tglAkhir}', 'laporan');
     });
@@ -115,5 +108,9 @@ Route::middleware('role:owner')->group(function () {
         Route::get('/{distributor}', 'edit');
         Route::put('/{distributor}','update');
         Route::delete('/{distributor}','destroy');
+    });
+
+    Route::prefix('laporan')->controller(\App\Http\Controllers\LaporanController::class)->group(function () {
+       Route::get('/barang-masuk', 'laporanBarangMasuk');
     });
 });

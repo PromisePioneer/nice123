@@ -40,9 +40,8 @@ class BarangController extends Controller
         $barang = Barang::create([
             'nama' => $request->nama,
             'dist_id' => $request->dist_id,
-            'qty' => $request->qty,
-            'harga_satuan' => $request->harga_satuan,
-            'total' =>   $request->qty * $request->harga_satuan,
+            'stok_barang' => $request->stok_barang,
+            'harga' => $request->harga,
             'user_id' => Auth::id()
         ]);
 

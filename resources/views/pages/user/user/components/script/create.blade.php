@@ -8,7 +8,7 @@
                 this.role = role.data;
             },
             async save(){
-               await axios.post("{{ url('user/store') }}", new FormData(form))
+               await axios.post("{{ url('user/user/store') }}", new FormData(form))
                    .then(() => {
                        Swal.fire({
                            title: "Berhasil",

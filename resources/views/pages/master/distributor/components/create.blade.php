@@ -14,8 +14,8 @@
             <div class="modal-body">
                 <form id="form-create" @submit.prevent="save()">
                     <div class="mb-10">
-                        <label class="required form-label">Nama</label>
-                        <input type="text" class="form-control form-control-solid" name="nama" placeholder="Nama Distributor"/>
+                        <label class="required form-label">Nama Distributor</label>
+                        <input type="text" class="form-control form-control-solid" name="nama_distributor" placeholder="Nama Distributor"/>
                     </div>
 
                     <div class="modal-footer">

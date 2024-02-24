@@ -5,19 +5,41 @@
     const formEdit = document.getElementById('form-edit');
     document.addEventListener('alpine:init', () => {
         Alpine.data('barangMasukData', () => ({
+            selectedDistributor: null,
+            additionalField: '',
+            detailDistributor: null,
             barangMasuk: null,
             barang:null,
+            distributor: null,
             isLoading: true,
             search: '',
             barangMasukId: '',
             editVal: '',
             async init(){
               const barangMasuk = await axios.get('barang-masuk/data');
+              const barang = await axios.get('barang-masuk/data-barang');
+              const distributor = await axios.get('barang-masuk/data-distributor');
+              // if(this.selectedDistributor !== null){
+              //     const idDistributor = Number(this.selectedDistributor)
+              //     const distributorInformation = await axios.get(`barang-masuk/showDistributorDetail/${idDistributor}`)
+              //     this.detailDistributor = distributorInformation;
+              // }
+
+
+              this.distributor = distributor.data;
               this.barangMasuk = barangMasuk.data;
               this.startIndex = this.barangMasuk.from;
               this.isLoading = false;
-              const barang = await axios.get('barang-masuk/data-barang');
               this.barang = barang.data;
+            },
+            async updateDetailDistributor() {
+                if (this.selectedDistributor !== null) {
+                    const idDistributor = Number(this.selectedDistributor);
+                    const distributorInformation = await axios.get(`barang-masuk/showDistributorDetail/${idDistributor}`);
+                    this.detailDistributor = distributorInformation.data;
+                } else {
+                    this.detailDistributor = '';
+                }
             },
             async searchData(){
                 this.barangMasuk = await axios.get('barang-masuk/search', {
@@ -67,7 +89,7 @@
                             } else {
                                 const smallElement = document.createElement('small');
                                 smallElement.classList.add('text-danger');
-                                smallElement.textContent = respError[err][0];
+                            smallElement.textContent = respError[err][0];
                                 input.insertAdjacentElement('afterend', smallElement);
                             }
                         })

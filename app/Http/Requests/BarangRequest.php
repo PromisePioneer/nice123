@@ -23,8 +23,9 @@ class BarangRequest extends FormRequest
         return [
             'nama' => 'required',
             'dist_id' => 'required',
-            'qty' => 'required',
-            'harga_satuan' => 'required'
+            'harga' => 'required',
+            'type' => 'required',
+            'stok_barang' => 'required',
         ];
     }
 

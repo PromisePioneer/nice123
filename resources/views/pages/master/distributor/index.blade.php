@@ -28,7 +28,7 @@
                     <thead>
                     <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200">
                         <td>No</td>
-                        <td>Nama</td>
+                        <td>Nama Distributor</td>
                         <td>Aksi</td>
                     </tr>
                     </thead>
@@ -54,7 +54,7 @@
                     <template x-for="(row,index) in distributor?.data">
                         <tr>
                             <td x-text="startIndex + index++"></td>
-                            <td x-text="row.nama"></td>
+                            <td x-text="row.nama_distributor"></td>
                             <td>
                                 <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-edit" @click="edit(row.id)">
                                     <i class="bi bi-pencil"></i>

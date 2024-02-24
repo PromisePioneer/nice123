@@ -4,18 +4,16 @@
             <div class="modal-header">
                 <h5 class="modal-title">Form Distributor</h5>
 
-                <!--begin::Close-->
                 <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
                     <span class="svg-icon svg-icon-2x"></span>
                 </div>
-                <!--end::Close-->
             </div>
 
             <div class="modal-body">
                 <form id="form-edit" @submit.prevent="update(distId)">
                     <div class="mb-10">
-                        <label class="required form-label">Nama</label>
-                        <input type="text" class="form-control form-control-solid" name="nama" placeholder="Nama Distributor" :value="editVal.data?.nama"/>
+                        <label class="required form-label">Nama Distributor</label>
+                        <input type="text" class="form-control form-control-solid" name="nama_distributor" placeholder="Nama Distributor" :value="editVal.data?.nama_distributor"/>
                     </div>
 
                     <div class="modal-footer">

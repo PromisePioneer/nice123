@@ -13,20 +13,16 @@ return new class extends Migration
     {
         Schema::create('barang_masuk', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('barang_id');
-            $table->foreign('barang_id')
+            $table->string('no');
+            $table->unsignedBigInteger('dist_id');
+            $table->foreign('dist_id')
                 ->references('id')
-                ->on('barang')
+                ->on('distributor')
                 ->onDelete('cascade');
             $table->date('tanggal');
             $table->double('qty');
-            $table->double('harga_satuan');
             $table->double('total');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade');
+            $table->string('user_id');
             $table->boolean('status')->default(0);
             $table->timestamps();
         });

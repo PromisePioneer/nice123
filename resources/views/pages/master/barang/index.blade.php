@@ -16,8 +16,6 @@
                     </ul>
                 </div>
             </div>
-            <!--end::Header-->
-            <!--begin::Body-->
             <div class="card-body py-3">
                 @include('pages.master.barang.components.create')
                 @include('pages.master.barang.components.edit')
@@ -30,10 +28,9 @@
                         <td>No</td>
                         <td>Nama</td>
                         <td>Distributor</td>
-                        <td>Kuantitas</td>
                         <td>Harga</td>
-                        <td>Total</td>
-                        <td>User</td>
+                        <td>Type</td>
+                        <td>Stok</td>
                         <td>Aksi</td>
                     </tr>
                     </thead>
@@ -61,11 +58,13 @@
                             <td x-text="startIndex + index++"></td>
                             <td x-text="row.nama"></td>
                             <td>
-                                <span class="badge bg-info" x-text="row.distributor?.nama"></span>
+                                <span class="badge bg-info" x-text="row.distributor?.nama_distributor"></span>
                             </td>
-                            <td x-text="row.qty"></td>
-                            <td x-text="row.harga_satuan"></td>
-                            <td x-text="row.total"></td>
+                            <td x-text="row.harga"></td>
+                                <td>
+                                    <span class="badge bg-info" x-text="row.type"></span>
+                                </td>
+                            <td x-text="row.stok_barang"></td>
                             <td>
                                 <span class="badge bg-warning" x-text="row.user.name"></span>
                             </td>
