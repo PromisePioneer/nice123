@@ -37,13 +37,13 @@ class BarangMasukController extends Controller
     public function search(Request $request)
     {
         $search = BarangMasuk::where(function ($query) use ($request) {
-                $query->orWhereHas('barang', function ($query) use ($request) {
-                    $query->where('nama', 'like', '%' . $request->search . '%');
-                })->orWhereHas('user', function ($query) use ($request) {
-                        $query->where('name', 'like', '%' . $request->search . '%');
-                })->orWhere('qty', 'like', '%' . $request->search . '%')
-                    ->orWhere('harga_satuan', 'like', '%' . $request->search . '%');
-            })
+            $query->orWhereHas('barang', function ($query) use ($request) {
+                $query->where('nama', 'like', '%' . $request->search . '%');
+            })->orWhereHas('user', function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->search . '%');
+            })->orWhere('qty', 'like', '%' . $request->search . '%')
+                ->orWhere('harga_satuan', 'like', '%' . $request->search . '%');
+        })
             ->get();
 
         return response()->json($search);
@@ -67,7 +67,17 @@ class BarangMasukController extends Controller
             'user_id' => Auth::id()
         ]);
 
-        return response()->json($transaksi, 200);
+        if ($request->input('barang')) {
+            $dataBarang = $request->input('barang', []);
+            foreach ($dataBarang as $item) {
+                $barang = new Barang([
+                    'nama' => $item->namaBarang
+                ]);
+                $barang->save();
+                $transaksi->barang()->attach($barang->id);
+            }
+        }
+        return response()->json(['message' => 'Data Berhasil Disimpan']);
     }
 
     public function showDistributorDetail(Distributor $distributor)
@@ -100,7 +110,7 @@ class BarangMasukController extends Controller
         return response()->json($barangMasuk->delete(), 200);
     }
 
-    public function updateStatus(Request $request  ,BarangMasuk $barangMasuk)
+    public function updateStatus(Request $request, BarangMasuk $barangMasuk)
     {
         $update = [
             'status' => $barangMasuk->status == 0 ? 1 : 0
