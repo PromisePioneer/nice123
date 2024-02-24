@@ -21,9 +21,9 @@ class Barang extends Model
     ];
     protected $with = ['distributor', 'user'];
 
-    public function distributor(): BelongsTo
+    public function distributor()
     {
-        return $this->belongsTo(Distributor::class, 'dist_id', 'id');
+        return $this->belongsToMany(Distributor::class, 'distributor_has_barang', 'dist_id', 'barang_id');
     }
 
     public function user(): BelongsTo
