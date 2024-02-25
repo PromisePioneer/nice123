@@ -26,6 +26,11 @@ class Barang extends Model
         return $this->belongsToMany(Distributor::class, 'distributor_has_barang', 'dist_id', 'barang_id');
     }
 
+    function distributorBarangKeluar()
+    {
+        return $this->belongsToMany(Distributor::class, 'distributor_has_barang_keluar', 'dist_id', 'barang_id');
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

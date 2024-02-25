@@ -6,9 +6,10 @@ use App\Http\Requests\BarangKeluarRequest;
 use App\Http\Requests\TransaksiRequest;
 use App\Models\Barang;
 use App\Models\BarangKeluar;
-use App\Models\Transaksi;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BarangKeluarController extends Controller
 {
@@ -24,7 +25,7 @@ class BarangKeluarController extends Controller
 
     public function data(Request $request)
     {
-        $number_page = $request->input('per_page' , 10);
+        $number_page = $request->input('per_page', 10);
         $barang_keluar = BarangKeluar::with('user.roles', 'barang')->paginate($number_page);
 
         return response()->json($barang_keluar);
@@ -33,13 +34,13 @@ class BarangKeluarController extends Controller
     public function search(Request $request)
     {
         $search = BarangKeluar::where(function ($query) use ($request) {
-                $query->orWhereHas('barang', function ($query) use ($request) {
-                    $query->where('nama', 'like', '%' . $request->search . '%');
-                })->orWhereHas('user', function ($query) use ($request) {
-                    $query->where('name', 'like', '%' . $request->search . '%');
-                })->orWhere('qty', 'like', '%' . $request->search . '%')
-                    ->orWhere('harga_satuan', 'like', '%' . $request->search . '%');
-            })->get();
+            $query->orWhereHas('barang', function ($query) use ($request) {
+                $query->where('nama', 'like', '%' . $request->search . '%');
+            })->orWhereHas('user', function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->search . '%');
+            })->orWhere('qty', 'like', '%' . $request->search . '%')
+                ->orWhere('harga_satuan', 'like', '%' . $request->search . '%');
+        })->get();
 
         return response()->json($search);
     }
@@ -49,18 +50,46 @@ class BarangKeluarController extends Controller
         return response()->json(Barang::all(), 200);
     }
 
-    public function store(BarangKeluarRequest $request)
-    {
-        $barang_keluar = BarangKeluar::create([
-            'barang_id' => $request->barang_id,
-            'qty' => $request->qty,
-            'harga_satuan' => $request->harga_satuan,
-            'total' => $request->qty * $request->harga_satuan,
-            'tanggal' => $request->tanggal,
-            'user_id' => Auth::id()
-        ]);
 
-        return response()->json($barang_keluar, 200);
+    public function store(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $no = 1;
+        $kode = 'BG-' . Carbon::now()->format('Ymd') . '-' . $no;
+
+        if ($request->has('dist_id')) {
+            $barang_ids = $request->input('barang_id', []);
+            $qty = $request->input("qty", []);
+            foreach ($barang_ids as $index => $barang_id) {
+                $barangs = DB::table('barang')->where('id', $barang_id)->select('barang.harga')->first();
+
+                $qtyValue = $qty[$index];
+                $barangMasuk = new BarangKeluar([
+                    'dist_id' => $request->dist_id,
+                    'barang_id' => $barang_id,
+                    'qty' => $qtyValue,
+                    'no' => $kode,
+                    'tanggal' => $request->tanggal,
+                    'harga_jual' => $request->harga_jual,
+                    'user_id' => Auth::id(),
+                    'total' => $barangs->harga * $qtyValue
+                ]);
+
+                $findStokBarang = DB::table('barang')->where('id', $barang_id)->get();
+
+                foreach ($findStokBarang as $findStok) {
+                    if ($findStok < $qtyValue) {
+                        DB::table('barang')->where('id', $findStok->id)->update([
+                            'stok_barang' => $findStok->stok_barang -= $qtyValue
+                        ]);
+                    } else {
+                        return response()->json(['message' => 'Error Data melebihi data stok!']);
+                    }
+                }
+                $barangMasuk->save();
+            }
+        }
+
+        return response()->json('test', 200);
     }
 
     public function edit(BarangKeluar $barangKeluar)

@@ -9,6 +9,7 @@ use App\Models\Distributor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BarangMasukController extends Controller
 {
@@ -63,7 +64,7 @@ class BarangMasukController extends Controller
             $barang_ids = $request->input('barang_id', []);
             $qty = $request->input("qty", []);
             foreach ($barang_ids as $index => $barang_id) {
-                $barangs = \DB::table('barang')->where('id', $barang_id)->select('barang.harga')->first();
+                $barangs = DB::table('barang')->where('id', $barang_id)->select('barang.harga')->first();
 
                 $qtyValue = $qty[$index];
                 $barangMasuk = new BarangMasuk([
@@ -76,9 +77,9 @@ class BarangMasukController extends Controller
                     'total' => $barangs->harga * $qtyValue
                 ]);
 
-                $findStokBarang = \DB::table('barang')->where('id', $barang_id)->get();
-                foreach ($findStokBarang as $findStok){
-                    \DB::table('barang')->where('id', $findStok->id)->update([
+                $findStokBarang = DB::table('barang')->where('id', $barang_id)->get();
+                foreach ($findStokBarang as $findStok) {
+                    DB::table('barang')->where('id', $findStok->id)->update([
                         'stok_barang' => $findStok->stok_barang += $qtyValue
                     ]);
                 }
