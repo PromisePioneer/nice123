@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-
     <div class="col-xl-12">
         <div class="card card-xl-stretch mb-5 mb-xl-8">
             <div class="card-header border-0 pt-5">
@@ -29,8 +28,8 @@
                                     <input type="date" name="tglAkhir" id="tglAkhir" class="form-control">
                                 </div>
                                 <a href="#"
-                                   onclick="this.href='/transaksi/barang-keluar/cetak-laporan/'+ document.getElementById('tglAwal').value + '/' + document.getElementById('tglAkhir').value"
-                                   class="btn btn-primary btn-sm btn-block mt-4" target="_blank">PRINT</a>
+                                    onclick="this.href='/transaksi/barang-masuk/cetak-laporan/'+ document.getElementById('tglAwal').value + '/' + document.getElementById('tglAkhir').value"
+                                    class="btn btn-primary btn-sm btn-block mt-4" target="_blank">PRINT</a>
                             </div>
                         </div>
                     </div>
