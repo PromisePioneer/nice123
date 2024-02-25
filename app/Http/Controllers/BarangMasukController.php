@@ -51,38 +51,47 @@ class BarangMasukController extends Controller
 
     public function create()
     {
-     return view('pages.barang-masuk.create');
+        return view('pages.barang-masuk.create');
     }
 
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         $no = 1;
         $kode = 'BG-' . Carbon::now()->format('Ymd') . '-' . $no;
-        $barang_masuk = BarangMasuk::join('distributor', 'barang_masuk.barang_id')->select('barang_masuk.*', 'distributor.harga_modal')->first();
-        $harga_modal = $barang_masuk->harga_modal;
-        $total = $request->qty * $harga_modal;
+        // $barang_masuk = BarangMasuk::join('distributor', 'barang_masuk.barang_id')
+        //     ->select('barang_masuk.*', 'distributor.harga_modal')->first();
+        // $harga_modal = $barang_masuk->harga_modal;
+        // $total = $request->qty * $harga_modal;
 
-        $transaksi = BarangMasuk::create([
-            'no' => $kode,
-            'dist_id' => $request->dist_id,
-            'tanggal' => $request->tanggal,
-            'qty' => $request->qty,
-            'stok' => $request->stok,
-            'total' => $total,
-            'user_id' => Auth::id()
-        ]);
+        // $transaksi = BarangMasuk::create([
+        //     'no' => $kode,
+        //     'dist_id' => $request->dist_id,
+        //     'tanggal' => $request->tanggal,
+        //     'qty' => $request->qty,
+        //     'stok' => $request->stok,
+        //     'total' => $total,
+        //     'user_id' => Auth::id()
+        // ]);
 
-        if ($request->input('barang')) {
+        $transaksi = new BarangMasuk();
+        $transaksi->no = $kode;
+        $transaksi->tanggal = $request->tanggal;
+        $transaksi->stok = $request->stok;
+        // $transaksi->total = $total;
+        $transaksi->user_id = Auth::id();
+
+        if ($request->input('dist_id')) {
             $dataBarang = $request->input('barang', []);
             foreach ($dataBarang as $item) {
-                $barang = new Barang([
-                    'nama' => $item->namaBarang
+                $barang = new BarangMasuk([
+                    'barang_id' => $item->barang_id,
+                    'qty' => $item->qty,
                 ]);
                 $barang->save();
-                $transaksi->barang()->attach($barang->id);
+                $transaksi->barang()->attach($barang->barangMasuk_id);
             }
         }
-        return response()->json(['message' => 'Data Berhasil Disimpan']);
+        return response()->json($transaksi, 200);
     }
 
     public function showDistributorDetail(Request $request): \Illuminate\Http\JsonResponse

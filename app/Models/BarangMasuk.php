@@ -14,6 +14,7 @@ class BarangMasuk extends Model
     protected $fillable = [
         'no',
         'dist_id',
+        'barang_id',
         'qty',
         'tanggal',
         'total',
@@ -26,6 +27,11 @@ class BarangMasuk extends Model
     public function distributor(): BelongsTo
     {
         return $this->belongsTo(Distributor::class, 'dist_id', 'id');
+    }
+
+    function barang()
+    {
+        return $this->belongsToMany(Barang::class, 'distributor_has_barang_masuk', 'barang_id', 'barangMasuk_id');
     }
 
     public function user(): BelongsTo
