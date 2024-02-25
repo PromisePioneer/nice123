@@ -58,41 +58,33 @@ class BarangMasukController extends Controller
     {
         $no = 1;
         $kode = 'BG-' . Carbon::now()->format('Ymd') . '-' . $no;
-        // $barang_masuk = BarangMasuk::join('distributor', 'barang_masuk.barang_id')
-        //     ->select('barang_masuk.*', 'distributor.harga_modal')->first();
-        // $harga_modal = $barang_masuk->harga_modal;
-        // $total = $request->qty * $harga_modal;
+//        dd($request->all());
 
-        // $transaksi = BarangMasuk::create([
-        //     'no' => $kode,
-        //     'dist_id' => $request->dist_id,
-        //     'tanggal' => $request->tanggal,
-        //     'qty' => $request->qty,
-        //     'stok' => $request->stok,
-        //     'total' => $total,
-        //     'user_id' => Auth::id()
-        // ]);
+        if ($request->has('dist_id')) {
+            $barang_ids = $request->input('barang_id', []);
+            $qty = $request->input("qty", []);
 
-        $transaksi = new BarangMasuk();
-        $transaksi->no = $kode;
-        $transaksi->tanggal = $request->tanggal;
-        $transaksi->stok = $request->stok;
-        // $transaksi->total = $total;
-        $transaksi->user_id = Auth::id();
-
-        if ($request->input('dist_id')) {
-            $dataBarang = $request->input('barang', []);
-            foreach ($dataBarang as $item) {
+            foreach ($barang_ids as $index => $barang_id) {
+                $qtyValue = $qty[$index];
                 $barang = new BarangMasuk([
-                    'barang_id' => $item->barang_id,
-                    'qty' => $item->qty,
+                    'dist_id' => $request->dist_id,
+                    'barang_id' => $barang_id,
+                    'qty' => $qtyValue,
+                    'no' => $kode,
+                    'tanggal' => $request->tanggal,
+                    'user_id' => Auth::id(),
+                    'total' => 10000
                 ]);
+
                 $barang->save();
-                $transaksi->barang()->attach($barang->barangMasuk_id);
+//                $barang->barang()->attach($barang->id);
             }
         }
-        return response()->json($transaksi, 200);
+
+        return response()->json('test', 200);
     }
+
+
 
     public function showDistributorDetail(Request $request): \Illuminate\Http\JsonResponse
     {
