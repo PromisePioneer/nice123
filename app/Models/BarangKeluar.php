@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BarangKeluar extends Model
 {
@@ -11,20 +12,25 @@ class BarangKeluar extends Model
 
     protected $table = 'barang_keluar';
     protected $fillable = [
+        'no',
+        'dist_id',
         'barang_id',
         'qty',
-        'harga_satuan',
         'tanggal',
         'total',
-        'type',
         'user_id',
         'status'
     ];
-    protected $with = ['barang', 'user'];
+    protected $with = ['distributor', 'user'];
 
-    public function barang()
+    public function distributor(): BelongsTo
     {
-        return $this->belongsTo(Barang::class, 'barang_id', 'id');
+        return $this->belongsTo(Distributor::class, 'dist_id', 'id');
+    }
+
+    function barang()
+    {
+        return $this->belongsToMany(Barang::class, 'distributor_has_barang_keluar', 'barang_id', 'id');
     }
 
     public function user()
