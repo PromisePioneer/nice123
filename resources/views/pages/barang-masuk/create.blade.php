@@ -50,6 +50,7 @@
     </div>
 
     <script>
+        const formCreate = document.getElementById('form-create');
         document.addEventListener('alpine:init', () => {
             Alpine.data('createBarangMasukData', () =>  ({
                 selectedDistributor: null,
@@ -70,6 +71,34 @@
                         this.detailDistributor = '';
                     }
                 },
+                async save(){
+                    await axios.post('barang-masuk', new FormData(formCreate))
+                        .then(() => {
+                            Swal.fire({
+                                title: "Berhasil",
+                                icon: "success"
+                            }).then(() => {
+                                modalCreate.hide();
+                                formCreate.reset();
+                                this.init();
+                            })
+                        })
+                        .catch(error => {
+                            const respError = error.response.data.errors;
+                            Object.keys(respError).map(err => {
+                                const input = formCreate.querySelector(`[name="${err}"]`);
+                                input.classList.add('is-invalid');
+                                if (input.nextElementSibling && input.nextElementSibling.tagName === 'SMALL') {
+                                    input.nextElementSibling.textContent = respError[err][0];
+                                } else {
+                                    const smallElement = document.createElement('small');
+                                    smallElement.classList.add('text-danger');
+                                    smallElement.textContent = respError[err][0];
+                                    input.insertAdjacentElement('afterend', smallElement);
+                                }
+                            })
+                        })
+                }
             }))
         })
     </script>
