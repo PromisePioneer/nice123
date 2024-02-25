@@ -58,26 +58,31 @@ class BarangMasukController extends Controller
     {
         $no = 1;
         $kode = 'BG-' . Carbon::now()->format('Ymd') . '-' . $no;
-//        dd($request->all());
 
         if ($request->has('dist_id')) {
             $barang_ids = $request->input('barang_id', []);
             $qty = $request->input("qty", []);
-
             foreach ($barang_ids as $index => $barang_id) {
+                $barangs = \DB::table('barang')->where('id', $barang_id)->select('barang.harga')->first();
+
                 $qtyValue = $qty[$index];
-                $barang = new BarangMasuk([
+                $barangMasuk = new BarangMasuk([
                     'dist_id' => $request->dist_id,
                     'barang_id' => $barang_id,
                     'qty' => $qtyValue,
                     'no' => $kode,
                     'tanggal' => $request->tanggal,
                     'user_id' => Auth::id(),
-                    'total' => 10000
+                    'total' => $barangs->harga * $qtyValue
                 ]);
 
-                $barang->save();
-//                $barang->barang()->attach($barang->id);
+                $findStokBarang = \DB::table('barang')->where('id', $barang_id)->get();
+                foreach ($findStokBarang as $findStok){
+                    \DB::table('barang')->where('id', $findStok->id)->update([
+                        'stok_barang' => $findStok->stok_barang += $qtyValue
+                    ]);
+                }
+                $barangMasuk->save();
             }
         }
 

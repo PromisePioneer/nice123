@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('distributor_has_barang_masuk', function (Blueprint $table) {
+        Schema::create('distributor_has_barang', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('barang_id');
             $table->unsignedBigInteger('dist_id');
-            $table->unsignedBigInteger('barangmasuk_id');
             $table->timestamps();
-
-            $table->foreign('dist_id')->references('id')->on('distributor')->onDelete('cascade');
-            $table->foreign('barangmasuk_id')->references('barang_id')->on('barang_masuk')->onDelete('cascade');
         });
     }
 
