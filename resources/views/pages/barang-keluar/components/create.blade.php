@@ -29,7 +29,8 @@
                                         <span class="form-check-label" x-text="`${row.nama} (Rp. ${row.harga})`"></span>
                                     </label>
                                     <!-- Adjust x-show binding -->
-                                    <input x-show="showQtyInput[index]" type="number" class="form-control form-control-solid" :name="'qty[' + index + ']'" :id="'qty_' + index" :placeholder="'Kuantitas ' + row.nama" x-model="barang[index].qty" />
+                                    <input x-show="showQtyInput[index]" type="number" class="form-control mb-4 form-control-solid" :name="'qty[' + index + ']'" :id="'qty_' + index" :placeholder="'Harga Jual ' + row.nama" x-model="barang[index].qty" />
+                                    <input x-show="showQtyInput[index]" type="number" class="form-control form-control-solid" :name="'harga_jual[' + index + ']'" :id="'qty_' + index" :placeholder="'Kuantitas ' + row.nama" x-model="barang[index].qty" />
                                 </div>
                             </template>
                         </div>

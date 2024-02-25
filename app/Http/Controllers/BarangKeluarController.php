@@ -72,9 +72,11 @@ class BarangKeluarController extends Controller
         if ($request->has('dist_id')) {
             $barang_ids = $request->input('barang_id', []);
             $qty = $request->input("qty", []);
+            $harga_jual = $request->input("qty", []);
             foreach ($barang_ids as $index => $barang_id) {
                 $barangs = DB::table('barang')->where('id', $barang_id)->select('barang.harga')->first();
 
+                $qtyValue = $qty[$index];
                 $qtyValue = $qty[$index];
                 $barangMasuk = new BarangKeluar([
                     'dist_id' => $request->dist_id,

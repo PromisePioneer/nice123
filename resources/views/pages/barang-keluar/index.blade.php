@@ -18,9 +18,6 @@
             </div>
 
             <div class="card-body py-3">
-                @include('pages.barang-keluar.components.create')
-                @include('pages.barang-keluar.components.edit')
-                @include('pages.barang-keluar.components.laporan')
                 <div class="float-end">
                     <input type="text" x-model="search" class="form-control form-control form-control-solid" name="search" placeholder="Cari.." @input.debounce="searchData"/>
                 </div>
