@@ -37,8 +37,9 @@ Route::middleware('web')->group(function () {
         Route::get('/data-barang', 'barangData');
         Route::get('/data-distributor', 'distributorData');
         Route::get('search', 'search');
+        Route::get('/create', 'create');
         Route::post('/', 'store');
-        Route::get('/showDistributorDetail/{distributor}', 'showDistributorDetail');
+        Route::get('/showDistributorDetail', 'showDistributorDetail');
         Route::get('/{barangMasuk}', 'edit');
         Route::put('/{barangMasuk}','update');
         Route::delete('/{barangMasuk}','destroy');
