@@ -19,6 +19,11 @@ return new class extends Migration
                 ->references('id')
                 ->on('distributor')
                 ->onDelete('cascade');
+            $table->unsignedBigInteger('barang_id');
+            $table->foreign('barang_id')
+                ->references('id')
+                ->on('barang')
+                ->onDelete('cascade');
             $table->date('tanggal');
             $table->double('qty');
             $table->double('total');

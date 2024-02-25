@@ -58,7 +58,7 @@ class BarangMasukController extends Controller
     {
         $no = 1;
         $kode = 'BG-' . Carbon::now()->format('Ymd') . '-' . $no;
-        $barang_masuk = BarangMasuk::join('distributor', 'barang_masuk.dist_id', 'distributor.id')->select('barang_masuk.*', 'distributor.harga_modal')->first();
+        $barang_masuk = BarangMasuk::join('distributor', 'barang_masuk.barang_id')->select('barang_masuk.*', 'distributor.harga_modal')->first();
         $harga_modal = $barang_masuk->harga_modal;
         $total = $request->qty * $harga_modal;
 
