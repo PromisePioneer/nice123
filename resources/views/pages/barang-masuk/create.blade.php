@@ -26,10 +26,12 @@
                             <template x-for="(row, index) in detailDistributor" :key="row.id">
                                 <div class="mb-4">
                                     <label class="form-check form-check-custom form-check-solid mb-4">
-                                        <input class="form-check-input" type="checkbox" :value="row.id" :name="'barang_id[' + index + ']'" />
+                                        <!-- Change x-model binding -->
+                                        <input class="form-check-input" type="checkbox" :value="row.id" :name="'barang_id[' + index + ']'" x-model="showQtyInput[index]" @click="toggleQtyInput(index)"/>
                                         <span class="form-check-label" x-text="`${row.nama} (Rp. ${row.harga})`"></span>
                                     </label>
-                                    <input type="number" class="form-control form-control-solid" :name="'qty[' + index + ']'" :id="'qty_' + index" :placeholder="'Kuantitas ' + row.nama" x-model="barang[index].qty" />
+                                    <!-- Adjust x-show binding -->
+                                    <input x-show="showQtyInput[index]" type="number" class="form-control form-control-solid" :name="'qty[' + index + ']'" :id="'qty_' + index" :placeholder="'Kuantitas ' + row.nama" x-model="barang[index].qty" />
                                 </div>
                             </template>
                         </div>
@@ -53,6 +55,7 @@
         const formCreate = document.getElementById('form-create');
         document.addEventListener('alpine:init', () => {
             Alpine.data('createBarangMasukData', () =>  ({
+                showQtyInput: [],
                 selectedDistributor: null,
                 additionalField: '',
                 detailDistributor: null,
@@ -61,6 +64,10 @@
                 async init(){
                     const distributor = await axios.get('/transaksi/barang-masuk/data-distributor');
                     this.distributor = distributor.data;
+                },
+                toggleQtyInput(index) {
+                    // Toggle the value at the specified index
+                    this.showQtyInput[index] = !this.showQtyInput[index];
                 },
                 async updateDetailDistributor() {
                     if (this.selectedDistributor !== null) {
@@ -78,9 +85,7 @@
                                 title: "Berhasil",
                                 icon: "success"
                             }).then(() => {
-                                modalCreate.hide();
-                                formCreate.reset();
-                                this.init();
+                                window.location.href ="{{url('/transaksi/barang-masuk')}}"
                             })
                         })
                         .catch(error => {
