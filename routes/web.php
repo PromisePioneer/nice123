@@ -41,6 +41,7 @@ Route::middleware('web')->group(function () {
         Route::post('/', 'store');
         Route::get('/showDistributorDetail', 'showDistributorDetail');
         Route::get('/{barangMasuk}', 'edit');
+        Route::get('detail/{barangMasuk}', 'detail');
         Route::put('/{barangMasuk}','update');
         Route::delete('/{barangMasuk}','destroy');
         Route::get('/invoice/{barangMasuk}', 'invoice');
@@ -52,7 +53,9 @@ Route::middleware('web')->group(function () {
         Route::get('/data', 'data');
         Route::get('/data-barang', 'dataBarang');
         Route::get('search', 'search');
+        Route::get('/create', 'create');
         Route::post('/', 'store');
+        Route::get('/showDistributorDetail', 'showDistributorDetail');
         Route::get('edit/{barangKeluar}', 'edit');
         Route::put('update/{barangKeluar}','update');
         Route::delete('/{barangKeluar}','destroy');

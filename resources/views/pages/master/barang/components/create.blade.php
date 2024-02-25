@@ -3,17 +3,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Form Barang</h5>
-                <!--begin::Close-->
                 <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
                     <span class="svg-icon svg-icon-2x"></span>
                 </div>
-                <!--end::Close-->
             </div>
 
             <div class="modal-body">
                 <form id="form-create" @submit.prevent="save()">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="mb-10">
                                 <label class="required form-label">Nama</label>
                                 <input type="text" class="form-control form-control-solid" name="nama" placeholder="Nama barang"/>
@@ -33,23 +31,13 @@
                         <div class="col-md-6">
                             <div class="mb-10">
                                 <label class="required form-label">Harga</label>
-                                <input type="number" class="form-control form-control-solid" name="harga" placeholder="Harga"/>
+                                <input type="number" class="form-control form-control-solid" name="harga"  placeholder="Harga"/>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-10">
                                 <label class="required form-label">Stok</label>
                                 <input type="number" class="form-control form-control-solid" name="stok_barang" placeholder="Stok Barang"/>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-10">
-                                <label class="required form-label">Type</label>
-                                <select class="form-select form-select-solid" name="type">
-                                    <option>-- Pilih Type --</option>
-                                    <option value="Masuk">Barang Masuk</option>
-                                    <option value="Keluar">Barang Keluar</option>
-                                </select>
                             </div>
                         </div>
                     </div>

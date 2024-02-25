@@ -24,26 +24,24 @@
                             <div class="mb-10">
                                 <label class="required form-label">Distributor</label>
                                 <select class="form-select form-select-solid"
-                                        data-control="select2"
-                                        data-placeholder="Pilih Distributor"
                                         name="dist_id">
-                                    <option></option>
+                                    <option>-- Pilih Distributor --</option>
                                     <template x-for="row in distributor" :key="row.id" >
-                                        <option :value="row.id" x-text="row.nama" :selected="row.id == editVal.dist_id"></option>
+                                        <option :value="row.id" x-text="row.nama_distributor" :selected="row.id == editVal.dist_id"></option>
                                     </template>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-10">
-                                <label class="required form-label">Kuantitas</label>
-                                <input type="number" :value="editVal.qty" class="form-control form-control-solid" name="qty" placeholder="Kuantitas"/>
+                                <label class="required form-label">Stok</label>
+                                <input type="number" :value="editVal.stok_barang" class="form-control form-control-solid" name="stok_barang" placeholder="stok" />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-10">
                                 <label class="required form-label">Harga</label>
-                                <input type="number" :value="editVal.harga_satuan" class="form-control form-control-solid" name="harga_satuan" placeholder="Harga"/>
+                                <input type="number" :value="editVal.harga" class="form-control form-control-solid" name="harga" placeholder="Harga"/>
                             </div>
                         </div>
                     </div>

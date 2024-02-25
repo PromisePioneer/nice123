@@ -29,8 +29,8 @@
                         <td>Nama</td>
                         <td>Distributor</td>
                         <td>Harga</td>
-                        <td>Type</td>
                         <td>Stok</td>
+                        <td>User</td>
                         <td>Aksi</td>
                     </tr>
                     </thead>
@@ -58,12 +58,9 @@
                             <td x-text="startIndex + index++"></td>
                             <td x-text="row.nama"></td>
                             <td>
-                                <span class="badge bg-info" x-text="row.distributor?.nama_distributor"></span>
+                                <span class="badge bg-info" x-text="row.distributors?.nama_distributor"></span>
                             </td>
                             <td x-text="row.harga"></td>
-                                <td>
-                                    <span class="badge bg-info" x-text="row.type"></span>
-                                </td>
                             <td x-text="row.stok_barang"></td>
                             <td>
                                 <span class="badge bg-warning" x-text="row.user.name"></span>

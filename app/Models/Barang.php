@@ -19,7 +19,14 @@ class Barang extends Model
         'user_id',
         'type'
     ];
-    protected $with = ['distributor', 'user'];
+    protected $with = ['distributors','distributor', 'user'];
+
+
+    public function distributors()
+    {
+        return $this->belongsTo(Distributor::class, 'dist_id', 'id');
+    }
+
 
     public function distributor()
     {

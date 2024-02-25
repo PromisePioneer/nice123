@@ -21,11 +21,16 @@ class BarangKeluar extends Model
         'user_id',
         'status'
     ];
-    protected $with = ['distributor', 'user'];
+    protected $with = ['barangs','distributor', 'user'];
 
     public function distributor(): BelongsTo
     {
         return $this->belongsTo(Distributor::class, 'dist_id', 'id');
+    }
+
+    function barangs()
+    {
+        return $this->belongsTo(Barang::class, 'barang_id', 'id');
     }
 
     function barang()

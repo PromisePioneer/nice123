@@ -12,16 +12,12 @@
                             <a href="{{ url('transaksi/barang-masuk/create') }}" class="btn btn-primary btn-sm" >
                                 Tambah Data
                             </a>
-                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modal-laporan">
-                                Print Data
-                            </button>
+
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="card-body py-3">
-                @include('pages.barang-masuk.components.edit')
-                @include('pages.barang-masuk.components.laporan')
                 <div class="float-end">
                     <input type="text" x-model="search" class="form-control form-control form-control-solid" name="search" placeholder="Cari.." @input.debounce="searchData"/>
                 </div>
@@ -63,11 +59,11 @@
                         <tr>
                             <td x-text="startIndex + index++"></td>
                             <td x-text="row.no"></td>
-                            <td x-text="row.distributor.nama_distributor"></td>
-                            <td x-text="row.distributor.nama_barang"></td>
+                            <td class="text-capitalize" x-text="row.distributor.nama_distributor"></td>
+                            <td class="text-capitalize" x-text="row.barangs.nama"></td>
                             <td x-text="row.qty"></td>
-                            <td x-text="row.distributor.harga_modal"></td>
-                            <td x-text="row.total"></td>
+                            <td  x-text="currency(row.barangs.harga)"></td>
+                            <td x-text="currency(row.total)"></td>
                             <td>
                                 <span class="badge bg-warning" x-text="row.user.name"></span>
                             </td>
@@ -88,9 +84,9 @@
                             </template>
                             <template x-if="row.status === 0">
                                 <td>
-                                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-edit" @click="edit(row.id)">
+                                    <a :href="'/transaksi/barang-masuk/' + row.id" class="btn btn-primary btn-sm">
                                         <i class="bi bi-pencil"></i>
-                                    </button>
+                                    </a>
                                     <button class="btn btn-danger btn-sm" @click="destroy(row.id)">
                                         <i class="bi bi-trash"></i>
                                     </button>
@@ -98,10 +94,7 @@
                                 </template>
                             <template x-if="row.status === 1">
                                 <td>
-                                    <button class="btn btn-danger btn-sm" @click="destroy(row.id)">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                    <a class="btn btn-info btn-sm" :href="`/transaksi/barang-masuk/invoice/${row.id}`" >
+                                    <a class="btn btn-info btn-sm" target="_blank" :href="`/transaksi/barang-masuk/invoice/${row.id}`" >
                                         <i class="bi bi-printer"></i>
                                     </a>
                                 </td>

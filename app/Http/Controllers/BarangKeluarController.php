@@ -50,6 +50,19 @@ class BarangKeluarController extends Controller
         return response()->json(Barang::all(), 200);
     }
 
+    public function create()
+    {
+        return view('pages.barang-keluar.components.create');
+    }
+
+    public function showDistributorDetail(Request $request): \Illuminate\Http\JsonResponse
+    {
+
+        $dist_id = $request->query('dist_id');
+        $distributorHasBarang = Barang::with('distributor')->where('dist_id', $dist_id)->get();
+        return response()->json($distributorHasBarang, 200);
+    }
+
 
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {

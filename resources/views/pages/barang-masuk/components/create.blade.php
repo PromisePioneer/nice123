@@ -43,7 +43,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Close</button>
+                        <a type="button" class="btn btn-light btn-sm" href="{{ url('transaksi/barang-masuk') }}">Back</a>
                         <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
                     </div>
                 </form>

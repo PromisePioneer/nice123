@@ -19,7 +19,9 @@ class BarangController extends Controller
     public function data(Request $request)
     {
         $perPage = $request->input('per_page', 10);
-        return response()->json(Barang::with('distributor','user')->paginate($perPage));
+
+        $barang = Barang::with('distributor','user')->paginate($perPage);
+        return response()->json($barang, 200);
     }
 
     public function distData()
@@ -58,9 +60,8 @@ class BarangController extends Controller
         $barang->update([
             'nama' => $request->nama,
             'dist_id' => $request->dist_id,
-            'qty' => $request->qty,
-            'harga_satuan' => $request->harga_satuan,
-            'total' =>   $request->qty * $request->harga_satuan,
+            'stok_barang' => $request->stok_barang,
+            'harga' => $request->harga,
             'user_id' => Auth::id()
         ]);
 

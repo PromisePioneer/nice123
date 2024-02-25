@@ -9,12 +9,9 @@
                 <div class="card-toolbar">
                     <ul class="nav">
                         <li class="nav-item">
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-create">
+                            <a href="{{ url('/transaksi/barang-keluar/create') }}" class="btn btn-primary btn-sm" >
                                 Tambah Data
-                            </button>
-                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modal-laporan">
-                                Print
-                            </button>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -63,10 +60,10 @@
                     <template x-for="(row,index) in barangKeluar?.data">
                         <tr>
                             <td x-text="startIndex + index++"></td>
-                            <td x-text="`${row.barang.nama}`"></td>
+                            <td x-text="row.barangs.nama"></td>
                             <td x-text="row.tanggal"></td>
                             <td x-text="row.qty"></td>
-                            <td x-text="row.harga_satuan"></td>
+                            <td x-text="row.harga_jual"></td>
                             <td x-text="row.total"></td>
                             <td>
                                 <span class="badge bg-warning" x-text="row.user.name"></span>
@@ -92,9 +89,9 @@
                                     <i class="bi bi-trash"></i>
                                 </button>
                                 </template>
-                                
+
                             </td>
-                           
+
                         </tr>
                     </template>
                     </tbody>
