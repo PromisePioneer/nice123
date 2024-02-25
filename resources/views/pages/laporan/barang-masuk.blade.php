@@ -29,7 +29,7 @@
                                     <input type="date" name="tglAkhir" id="tglAkhir" class="form-control">
                                 </div>
                                 <a href="#"
-                                   onclick="this.href='barang-keluar/cetak-laporan/'+ document.getElementById('tglAwal').value + '/' + document.getElementById('tglAkhir').value"
+                                   onclick="this.href='/transaksi/barang-keluar/cetak-laporan/'+ document.getElementById('tglAwal').value + '/' + document.getElementById('tglAkhir').value"
                                    class="btn btn-primary btn-sm btn-block mt-4" target="_blank">PRINT</a>
                             </div>
                         </div>
