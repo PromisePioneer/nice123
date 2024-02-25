@@ -9,9 +9,9 @@
                 <div class="card-toolbar">
                     <ul class="nav">
                         <li class="nav-item">
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-create">
+                            <a href="{{ url('transaksi/barang-masuk/create') }}" class="btn btn-primary btn-sm" >
                                 Tambah Data
-                            </button>
+                            </a>
                             <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modal-laporan">
                                 Print Data
                             </button>
@@ -20,7 +20,6 @@
                 </div>
             </div>
             <div class="card-body py-3">
-                @include('pages.barang-masuk.components.create')
                 @include('pages.barang-masuk.components.edit')
                 @include('pages.barang-masuk.components.laporan')
                 <div class="float-end">

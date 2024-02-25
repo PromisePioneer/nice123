@@ -49,6 +49,11 @@ class BarangMasukController extends Controller
         return response()->json($search);
     }
 
+    public function create()
+    {
+     return view('pages.barang-masuk.create');
+    }
+
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         $no = 1;
@@ -80,9 +85,12 @@ class BarangMasukController extends Controller
         return response()->json(['message' => 'Data Berhasil Disimpan']);
     }
 
-    public function showDistributorDetail(Distributor $distributor)
+    public function showDistributorDetail(Request $request): \Illuminate\Http\JsonResponse
     {
-        return response()->json($distributor);
+
+        $dist_id = $request->query('dist_id');
+        $distributorHasBarang = Barang::with('distributor')->where('dist_id', $dist_id)->get();
+        return response()->json($distributorHasBarang, 200);
     }
 
     public function edit(BarangMasuk $barangMasuk)
