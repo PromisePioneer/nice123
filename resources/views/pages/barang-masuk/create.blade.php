@@ -26,10 +26,10 @@
                             <template x-for="(row, index) in detailDistributor" :key="row.id">
                                 <div class="mb-4">
                                     <label class="form-check form-check-custom form-check-solid mb-4">
-                                        <input class="form-check-input" type="checkbox" :value="row.id" name="barang_id"/>
+                                        <input class="form-check-input" type="checkbox" :value="row.id" :name="'barang_id[' + index + ']'" />
                                         <span class="form-check-label" x-text="`${row.nama} (Rp. ${row.harga})`"></span>
                                     </label>
-                                    <input type="number" class="form-control form-control-solid" :name="'qty_' + index" :id="'qty_' + index" :placeholder="'Kuantitas ' + row.nama"/>
+                                    <input type="number" class="form-control form-control-solid" :name="'qty[' + index + ']'" :id="'qty_' + index" :placeholder="'Kuantitas ' + row.nama" x-model="barang[index].qty" />
                                 </div>
                             </template>
                         </div>
