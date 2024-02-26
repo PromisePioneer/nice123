@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="col-xl-12" x-data="barangMasukData">
+    <div class="col-xl-12">
         <div class="card card-xl-stretch mb-5 mb-xl-8">
             <div class="card-header border-0 pt-5">
                 <h3 class="card-title align-items-start flex-column">
@@ -18,6 +18,7 @@
                             <td>No</td>
                             <td>No.Transaksi</td>
                             <td>Nama Distributor</td>
+
                             <td>Nama Barang</td>
                             <td>Qty</td>
                             <td>Harga</td>
@@ -32,13 +33,21 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->no }}</td>
-                                <td>{{ $item->distributor->nama_distributor }}</td>
+                                <td>{{ $item->nama_customer }}</td>
                                 <td>{{ $item->barangs->nama }}</td>
                                 <td>{{ $item->qty }}</td>
-                                <td>{{ $item->barangs->harga }}</td>
-                                <td>{{ $item->total }}</td>
+                                <td>Rp.{{ number_format($item->barangs->harga_modal) }}</td>
+                                <td>Rp.{{ number_format($item->total) }}</td>
                                 <td>{{ $item->user->name }}</td>
-                                <td>{{ $item->status }}</td>
+                                @if($item->status === 0)
+                                    <td>
+                                        <span class="badge bg-warning">Pending</span>
+                                    </td>
+                                @else
+                                    <td>
+                                        <span class="badge bg-success">Approved</span>
+                                    </td>
+                                @endif
                                 <td>{{ $item->tanggal }}</td>
                             </tr>
                         @empty
@@ -63,7 +72,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-12" x-data="barangMasukData">
+    <div class="col-xl-12" >
         <div class="card card-xl-stretch mb-5 mb-xl-8">
             <div class="card-header border-0 pt-5">
                 <h3 class="card-title align-items-start flex-column">
@@ -81,6 +90,7 @@
                             <td>No</td>
                             <td>No.Transaksi</td>
                             <td>Nama Distributor</td>
+                            <td>Customer</td>
                             <td>Nama Barang</td>
                             <td>Qty</td>
                             <td>Harga</td>
@@ -96,12 +106,21 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->no }}</td>
                                 <td>{{ $item->distributor->nama_distributor }}</td>
+                                <td>{{ $item->nama_customer }}</td>
                                 <td>{{ $item->barangs->nama }}</td>
                                 <td>{{ $item->qty }}</td>
-                                <td>{{ $item->barangs->harga }}</td>
-                                <td>{{ $item->total }}</td>
-                                <td>{{ $item->user->name }}</td>
-                                <td>{{ $item->status }}</td>
+                                <td>Rp.{{ number_format($item->barangs->harga_jual) }}</td>
+                                <td>Rp.{{ number_format($item->total) }}</td>
+                                <td class="text-capitalize">{{ $item->user->name }}</td>
+                                @if($item->status === 0)
+                                    <td>
+                                        <span class="badge bg-warning">Pending</span>
+                                    </td>
+                                @else
+                                    <td>
+                                        <span class="badge bg-success">Approved</span>
+                                    </td>
+                                @endif
                                 <td>{{ $item->tanggal }}</td>
                             </tr>
                         @empty

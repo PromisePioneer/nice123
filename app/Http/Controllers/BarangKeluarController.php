@@ -6,6 +6,7 @@ use App\Http\Requests\BarangKeluarRequest;
 use App\Http\Requests\TransaksiRequest;
 use App\Models\Barang;
 use App\Models\BarangKeluar;
+use App\Models\Distributor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,9 +46,9 @@ class BarangKeluarController extends Controller
         return response()->json($search);
     }
 
-    public function barangData()
+    public function distributorData()
     {
-        return response()->json(Barang::all(), 200);
+        return response()->json(Distributor::all(), 200);
     }
 
     public function create()
@@ -66,38 +67,31 @@ class BarangKeluarController extends Controller
 
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
-        $no = 1;
-        $kode = 'BG-' . Carbon::now()->format('Ymd') . '-' . $no;
+        $kode = 'BG-' . Carbon::now()->format('YmdmHi-s');
 
         if ($request->has('dist_id')) {
             $barang_ids = $request->input('barang_id', []);
             $qty = $request->input("qty", []);
-            $harga_jual = $request->input("qty", []);
             foreach ($barang_ids as $index => $barang_id) {
-                $barangs = DB::table('barang')->where('id', $barang_id)->select('barang.harga')->first();
+                $barangs = DB::table('barang')->where('id', $barang_id)->select('barang.harga_jual')->first();
 
-                $qtyValue = $qty[$index];
                 $qtyValue = $qty[$index];
                 $barangMasuk = new BarangKeluar([
                     'dist_id' => $request->dist_id,
+                    'nama_customer' => $request->nama_customer,
                     'barang_id' => $barang_id,
                     'qty' => $qtyValue,
                     'no' => $kode,
                     'tanggal' => $request->tanggal,
-                    'harga_jual' => $request->harga_jual,
                     'user_id' => Auth::id(),
-                    'total' => $barangs->harga * $qtyValue
+                    'total' => $barangs->harga_jual * $qtyValue
                 ]);
 
                 $findStokBarang = DB::table('barang')->where('id', $barang_id)->get();
 
                 foreach ($findStokBarang as $findStok) {
-                    if ($findStok < $qtyValue) {
-                        DB::table('barang')->where('id', $findStok->id)->update([
-                            'stok_barang' => $findStok->stok_barang -= $qtyValue
-                        ]);
-                    } else {
-                        return response()->json(['message' => 'Error Data melebihi data stok!']);
+                    if ($findStok->stok_barang <= $qtyValue - 1) {
+                        throw new \Error('Error: Insufficient stock');
                     }
                 }
                 $barangMasuk->save();
@@ -109,7 +103,12 @@ class BarangKeluarController extends Controller
 
     public function edit(BarangKeluar $barangKeluar)
     {
-        return response()->json($barangKeluar);
+        return view('pages.barang-keluar.components.edit', compact('barangKeluar'));
+    }
+
+    public function detail(BarangKeluar $barangKeluar)
+    {
+        return response()->json($barangKeluar, 200);
     }
 
     public function update(BarangKeluarRequest $request, BarangKeluar $barangKeluar)
@@ -134,16 +133,20 @@ class BarangKeluarController extends Controller
 
     public function updateStatus(BarangKeluar $barangKeluar)
     {
+
+        $barang = Barang::find($barangKeluar->barang_id);
+        $barang->stok_barang >= 0 ? $barang->stok_barang -= $barangKeluar->qty : $barang->stok_barang;
         $update = [
             'status' => $barangKeluar->status == 0 ? 1 : 0
         ];
 
         BarangKeluar::whereId($barangKeluar->id)->update($update);
-
-        $barang = Barang::find($barangKeluar->barang_id);
-        $barang->qty >= 0 ? $barang->qty -= $barangKeluar->qty : $barang->qty;
-        $barang->total -= $barangKeluar->total;
         return $barang->save();
+    }
+
+    public function invoice(BarangKeluar $barangKeluar)
+    {
+        return view('pages.barang-keluar.components.invoice', compact('barangKeluar'));
     }
 
     public function laporan($tglAwal, $tglAkhir)

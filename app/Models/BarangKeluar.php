@@ -14,12 +14,14 @@ class BarangKeluar extends Model
     protected $fillable = [
         'no',
         'dist_id',
+        'nama_customer',
         'barang_id',
         'qty',
         'tanggal',
         'total',
         'user_id',
-        'status'
+        'status',
+        'harga_jual'
     ];
     protected $with = ['barangs','distributor', 'user'];
 

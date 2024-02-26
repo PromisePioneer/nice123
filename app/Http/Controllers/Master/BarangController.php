@@ -23,10 +23,14 @@ class BarangController extends Controller
         ));
     }
 
+    public function recordBarang()
+    {
+        return view('record-barang.index');
+    }
+
     public function data(Request $request)
     {
         $perPage = $request->input('per_page', 10);
-
         $barang = Barang::with('distributor', 'user')->paginate($perPage);
         return response()->json($barang, 200);
     }
@@ -50,7 +54,8 @@ class BarangController extends Controller
             'nama' => $request->nama,
             'dist_id' => $request->dist_id,
             'stok_barang' => $request->stok_barang,
-            'harga' => $request->harga,
+            'harga_modal' => $request->harga_modal,
+            'harga_jual' => $request->harga_jual,
             'user_id' => Auth::id()
         ]);
 

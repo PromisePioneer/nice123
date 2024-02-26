@@ -28,7 +28,7 @@
                                     <label class="form-check form-check-custom form-check-solid mb-4">
                                         <!-- Change x-model binding -->
                                         <input class="form-check-input" type="checkbox" :value="row.id" :name="'barang_id[' + index + ']'" x-model="showQtyInput[index]" @click="toggleQtyInput(index)"/>
-                                        <span class="form-check-label" x-text="`${row.nama} (Rp. ${row.harga})`"></span>
+                                        <span class="form-check-label" x-text="`${row.nama} (Rp. ${row.harga_modal})`"></span>
                                     </label>
                                     <!-- Adjust x-show binding -->
                                     <input x-show="showQtyInput[index]" type="number" class="form-control form-control-solid" :name="'qty[' + index + ']'" :id="'qty_' + index" :placeholder="'Kuantitas ' + row.nama" x-model="barang[index].qty" />

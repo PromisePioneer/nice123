@@ -1,11 +1,22 @@
 <script defer>
+    const formCreateBarang = document.getElementById('form-create');
+    const modalCreateBarang = new bootstrap.Modal(document.getElementById('modal-create'));
+    const formEditBarang = document.getElementById('form-edit');
+    const modalEditBarang = new bootstrap.Modal(document.getElementById('modal-edit'));
     document.addEventListener('alpine:init', () => {
         Alpine.data('barangMasukData', () => ({
             barangMasuk: null,
             isLoading: true,
             search: '',
+            barangData: null,
+            distributor: null,
+            editValBarang: null,
             async init(){
               const barangMasuk = await axios.get('barang-masuk/data');
+              const barangData = await axios.get('/master/barang/data');
+              const distributor = await axios.get('/master/barang/data-distributor');
+              this.distributor = distributor.data;
+              this.barangData = barangData.data;
               this.barangMasuk = barangMasuk.data;
               this.startIndex = this.barangMasuk.from;
               this.isLoading = false;
@@ -28,7 +39,7 @@
                    this.isLoading = false;
                }
            },
-           async previousPage(){
+            async previousPage(){
                if(this.barangMasuk.prev_page_url){
                    const resp = await axios.get(`${this.barangMasuk.prev_page_url}`)
                    this.barangMasuk = resp.data;
@@ -36,22 +47,22 @@
                    this.isLoading = false;
                }
            },
-            async update(barangMasukId){
-                await axios.put(`barang-masuk/${barangMasukId}`, new FormData(formEdit))
+            async saveBarang(){
+                await axios.post('/master/barang', new FormData(formCreateBarang))
                     .then(() => {
                         Swal.fire({
                             title: "Berhasil",
                             icon: "success"
                         }).then(() => {
-                            modalEdit.hide();
-                            formEdit.reset();
+                            formCreateBarang.reset();
+                            modalCreateBarang.hide();
                             this.init();
                         })
-                    })
-                    .catch(error => {
+                    }).catch(error => {
                         const respError = error.response.data.errors;
+                        console.log(error);
                         Object.keys(respError).map(err => {
-                            const input = formEdit.querySelector(`[name="${err}"]`);
+                            const input = formCreateBarang.querySelector(`[name="${err}"]`);
                             input.classList.add('is-invalid');
                             if (input.nextElementSibling && input.nextElementSibling.tagName === 'SMALL') {
                                 input.nextElementSibling.textContent = respError[err][0];
@@ -63,7 +74,65 @@
                             }
                         })
                     })
-                },
+            },
+            async editBarang(id){
+                this.barangId = id;
+                this.editValBarang = await axios.get(`/master/barang/${id}`);
+
+            },
+            async updateBarang(barangId){
+                await axios.put(`/master/barang/${barangId}`, new FormData(formEditBarang))
+                    .then(() => {
+                        Swal.fire({
+                            title: "Berhasil",
+                            icon: 'success'
+                        }).then(() => {
+                            formEditBarang.reset();
+                            modalEditBarang.hide();
+                            this.init();
+                        })
+                    })
+                    .catch(error => {
+                        const respError = error.response.data.errors;
+                        Object.keys(respError).map(err => {
+                            const input = formEditBarang.querySelector(`[name="${err}"]`);
+                            input.classList.add('is-invalid');
+                            if (input.nextElementSibling && input.nextElementSibling.tagName === 'SMALL') {
+                                input.nextElementSibling.textContent = respError[err][0];
+                            } else {
+                                const smallElement = document.createElement('small');
+                                smallElement.classList.add('text-danger');
+                                smallElement.textContent = respError[err][0];
+                                input.insertAdjacentElement('afterend', smallElement);
+                            }
+                        })
+                    })
+            },
+            async destroyBarang(id){
+                const result = await Swal.fire({
+                    title: "Anda yakin?",
+                    text: "Data akan hilang.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, Hapus!"
+                }).then( (result) => {
+                    if (result.isConfirmed) {
+                        try {
+                            axios.delete(`/master/barang/${id}`);
+                            Swal.fire({
+                                title: "Terhapus!",
+                                text: "Data sukses dihapus",
+                                icon: "success"
+                            });
+                            this.init();
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    }
+                });
+            },
             async destroy(id){
                 const result = await Swal.fire({
                     title: "Anda yakin?",

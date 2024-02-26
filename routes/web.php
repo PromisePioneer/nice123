@@ -52,13 +52,16 @@ Route::middleware('web')->group(function () {
         Route::get('/', 'index');
         Route::get('/data', 'data');
         Route::get('/data-barang', 'dataBarang');
+        Route::get('/data-distributor', 'distributorData');
         Route::get('search', 'search');
         Route::get('/create', 'create');
         Route::post('/', 'store');
         Route::get('/showDistributorDetail', 'showDistributorDetail');
         Route::get('edit/{barangKeluar}', 'edit');
+        Route::get('detail/{barangKeluar}', 'detail');
         Route::put('update/{barangKeluar}','update');
         Route::delete('/{barangKeluar}','destroy');
+        Route::get('/invoice/{barangKeluar}', 'invoice');
         Route::post('/update-status/{barangKeluar}', 'updateStatus');
         Route::get('/cetak-laporan/{tglAwal}/{tglAkhir}', 'laporan');
     });
@@ -115,6 +118,7 @@ Route::middleware('role:owner')->group(function () {
     });
 
     Route::prefix('laporan')->controller(\App\Http\Controllers\LaporanController::class)->group(function () {
-       Route::get('/barang-masuk', 'laporanBarangMasuk');
+        Route::get('/barang-masuk', 'laporanBarangMasuk');
+        Route::get('/barang-keluar', 'laporanBarangKeluar');
     });
 });

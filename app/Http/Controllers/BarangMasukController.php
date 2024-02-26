@@ -63,7 +63,7 @@ class BarangMasukController extends Controller
             $barang_ids = $request->input('barang_id', []);
             $qty = $request->input("qty", []);
             foreach ($barang_ids as $index => $barang_id) {
-                $barangs = \DB::table('barang')->where('id', $barang_id)->select('barang.harga')->first();
+                $barangs = \DB::table('barang')->where('id', $barang_id)->select('barang.harga_modal')->first();
 
                 $qtyValue = $qty[$index];
                 $barangMasuk = new BarangMasuk([
@@ -73,15 +73,15 @@ class BarangMasukController extends Controller
                     'no' => $kode,
                     'tanggal' => $request->tanggal,
                     'user_id' => Auth::id(),
-                    'total' => $barangs->harga * $qtyValue
+                    'total' => $barangs->harga_modal * $qtyValue
                 ]);
 
-                $findStokBarang = \DB::table('barang')->where('id', $barang_id)->get();
-                foreach ($findStokBarang as $findStok) {
-                    \DB::table('barang')->where('id', $findStok->id)->update([
-                        'stok_barang' => $findStok->stok_barang += $qtyValue
-                    ]);
-                }
+//                $findStokBarang = \DB::table('barang')->where('id', $barang_id)->get();
+//                foreach ($findStokBarang as $findStok){
+//                    \DB::table('barang')->where('id', $findStok->id)->update([
+//                        'stok_barang' => $findStok->stok_barang += $qtyValue
+//                    ]);
+//                }
                 $barangMasuk->save();
             }
         }
@@ -115,10 +115,10 @@ class BarangMasukController extends Controller
             $barang_ids = $request->input('barang_id', []);
             $qty = $request->input("qty", []);
             foreach ($barang_ids as $index => $barang_id) {
-                $barangs = \DB::table('barang')->where('id', $barang_id)->select('harga')->first();
+                $barangs = \DB::table('barang')->where('id', $barang_id)->select('barang.harga_modal')->first();
 
                 $qtyValue = $qty[$index];
-                $total = $barangs->harga * $qtyValue;
+                $total = $barangs->harga_modal * $qtyValue;
 
                 $barangMasuk->where('dist_id', $request->dist_id)
                     ->where('barang_id', $barang_id)
@@ -129,12 +129,12 @@ class BarangMasukController extends Controller
                         'total' => $total
                     ]);
 
-                $findStokBarang = \DB::table('barang')->where('id', $barang_id)->get();
-                foreach ($findStokBarang as $findStok) {
-                    \DB::table('barang')->where('id', $findStok->id)->update([
-                        'stok_barang' => $findStok->stok_barang + $qtyValue
-                    ]);
-                }
+//                $findStokBarang = \DB::table('barang')->where('id', $barang_id)->get();
+//                foreach ($findStokBarang as $findStok){
+//                    \DB::table('barang')->where('id', $findStok->id)->update([
+//                        'stok_barang' => $findStok->stok_barang + $qtyValue
+//                    ]);
+//                }
             }
         }
         return response()->json('success', 200);
@@ -147,14 +147,14 @@ class BarangMasukController extends Controller
 
     public function updateStatus(Request $request, BarangMasuk $barangMasuk)
     {
+
+        $barang = Barang::find($barangMasuk->barang_id);
+        $barang->stok_barang >= 0 ? $barang->stok_barang += $barangMasuk->qty : $barang->stok_barang;
+
         $update = [
             'status' => $barangMasuk->status == 0 ? 1 : 0
         ];
         BarangMasuk::whereId($barangMasuk->id)->update($update);
-
-        $barang = Barang::find($barangMasuk->barang_id);
-        $barang->qty >= 0 ? $barang->qty -= $barangMasuk->qty : $barang->qty;
-        $barang->total -= $barangMasuk->total;
         return $barang->save();
     }
 
@@ -166,7 +166,7 @@ class BarangMasukController extends Controller
 
     public function laporan($tglAwal, $tglAkhir)
     {
-        $laporan = BarangMasuk::with('barangs')
+        $laporan = BarangMasuk::with('barang')
             ->where('status', 1)
             ->whereBetWeen('tanggal', [$tglAwal, $tglAkhir])
             ->get();

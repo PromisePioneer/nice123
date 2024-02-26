@@ -204,7 +204,7 @@
                                 <span class="menu-section text-muted text-uppercase fs-8 ls-1">Transaksi</span>
                             </div>
                         </div>
-                        <div data-kt-menu-trigger="click" class="menu-item menu-accordion ">
+                        <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Request::segment(1) == 'laporan' ? 'active hover show' : '' }} ">
 									<span class="menu-link">
 										<span class="menu-icon">
 											<i class="bi bi-bag-check-fill fs-2"></i>
@@ -212,17 +212,17 @@
 										<span class="menu-title">Laporan</span>
 										<span class="menu-arrow"></span>
 									</span>
-                            <div class="menu-sub menu-sub-accordion menu-active-bg">
-                                <div class="menu-item">
-                                    <a class="menu-link " href="{{ url('laporan/barang-masuk') }}">
+                            <div class="menu-sub menu-sub-accordion  menu-active-bg">
+                                <div class="menu-item ">
+                                    <a class="menu-link {{ Request::segment(2) == 'barang-masuk' ? 'active' : '' }} " href="{{ url('laporan/barang-masuk') }}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
                                         <span class="menu-title">Laporan Barang Masuk</span>
                                     </a>
                                 </div>
-                                <div class="menu-item">
-                                    <a class="menu-link" href="{{ url('transaksi/barang-keluar') }}">
+                                <div class="menu-item ">
+                                    <a class="menu-link {{ Request::segment(2) == 'barang-keluar' ? 'active' : '' }}" href="{{ url('laporan/barang-keluar') }}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>

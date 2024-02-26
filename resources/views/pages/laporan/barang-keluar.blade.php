@@ -16,40 +16,40 @@
 
             <div class="card-body py-5 pb-10">
                 <div class="row" >
-                    <div class="row justify-content-center align-items-center">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="">Tanggal Awal</label>
-                                <input type="date" name="tglAwal" id="tglAwal" class="form-control">
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Tanggal Awal</label>
+                                    <input type="date" name="tglAwal" id="tglAwal" class="form-control">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="">Tanggal Akhir</label>
-                                <input type="date" name="tglAkhir" id="tglAkhir" class="form-control">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Tanggal Akhir</label>
+                                    <input type="date" name="tglAkhir" id="tglAkhir" class="form-control">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <a href="#"
-                               onclick="this.href='/transaksi/barang-masuk/cetak-laporan/'+ document.getElementById('tglAwal').value + '/' + document.getElementById('tglAkhir').value"
-                               class="btn btn-primary btn-sm btn-block mt-4" target="_blank">Print</a>
+                            <div class="col-md-4">
+                                <a href="#"
+                                   onclick="this.href='/transaksi/barang-keluar/cetak-laporan/'+ document.getElementById('tglAwal').value + '/' + document.getElementById('tglAkhir').value"
+                                   class="btn btn-primary btn-sm btn-block mt-4" target="_blank">Print</a>
+                            </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="col-xl-12">
+    <div class="col-xl-12" >
         <div class="card card-xl-stretch mb-5 mb-xl-8">
             <div class="card-header border-0 pt-5">
                 <h3 class="card-title align-items-start flex-column">
-                    <span class="card-labelLaporan fw-bolder fs-3 mb-1">Data Barang Masuk</span>
+                    <span class="card-labelLaporan fw-bolder fs-3 mb-1">Data Barang Keluar</span>
                 </h3>
             </div>
             <div class="card-body py-3">
                 <div class="float-end">
-                    <input type="text" x-model="search" class="form-control form-control form-control-solid" name="search"
-                           placeholder="Cari.." @input.debounce="searchData" />
+                    <input type="text" x-model="search" class="form-control form-control form-control-solid"
+                           name="search" placeholder="Cari.." @input.debounce="searchData" />
                 </div>
                 <table class="table table-striped table-bordered gy-7 gs-7">
                     <thead>
@@ -67,15 +67,16 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @forelse ($barangMasuk as $item)
+                    @forelse ($barangKeluar as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->no }}</td>
                             <td>{{ $item->distributor->nama_distributor }}</td>
+                            <td>{{ $item->nama_customer }}</td>
                             <td>{{ $item->barangs->nama }}</td>
                             <td>{{ $item->qty }}</td>
-                            <td>{{ $item->barangs->harga }}</td>
-                            <td>{{ $item->total }}</td>
+                            <td>Rp.{{ number_format($item->barangs->harga_jual) }}</td>
+                            <td>Rp.{{ number_format($item->total) }}</td>
                             <td>{{ $item->user->name }}</td>
                             @if($item->status === 0)
                                 <td>

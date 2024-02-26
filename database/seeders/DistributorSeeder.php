@@ -16,7 +16,6 @@ class DistributorSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
         for ($i = 1; $i <= 10; $i++) {
-
             DB::table('distributor')->insert([
                 'nama_distributor' => $faker->name
             ]);

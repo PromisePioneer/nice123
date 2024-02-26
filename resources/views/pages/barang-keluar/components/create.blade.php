@@ -4,7 +4,7 @@
         <div class="card card-xl-stretch mb-5 mb-xl-8">
             <div class="card-header border-0 pt-5">
                 <h3 class="card-title align-items-start flex-column">
-                    <span class="card-label fw-bolder fs-3 mb-1">Tambah Barang Masuk</span>
+                    <span class="card-label fw-bolder fs-3 mb-1">Tambah Barang Keluar</span>
                 </h3>
             </div>
             <div class="card-body py-3">
@@ -24,15 +24,17 @@
                             <template x-for="(row, index) in detailDistributor" :key="row.id">
                                 <div class="mb-4">
                                     <label class="form-check form-check-custom form-check-solid mb-4">
-                                        <!-- Change x-model binding -->
                                         <input class="form-check-input" type="checkbox" :value="row.id" :name="'barang_id[' + index + ']'" x-model="showQtyInput[index]" @click="toggleQtyInput(index)"/>
-                                        <span class="form-check-label" x-text="`${row.nama} (Rp. ${row.harga})`"></span>
+                                        <span class="form-check-label" x-text="`${row.nama} (Rp. ${row.harga_jual})`"></span>
                                     </label>
-                                    <!-- Adjust x-show binding -->
-                                    <input x-show="showQtyInput[index]" type="number" class="form-control mb-4 form-control-solid" :name="'qty[' + index + ']'" :id="'qty_' + index" :placeholder="'Harga Jual ' + row.nama" x-model="barang[index].qty" />
-                                    <input x-show="showQtyInput[index]" type="number" class="form-control form-control-solid" :name="'harga_jual[' + index + ']'" :id="'qty_' + index" :placeholder="'Kuantitas ' + row.nama" x-model="barang[index].qty" />
+                                    <input x-show="showQtyInput[index]" type="number" class="form-control form-control-solid" :name="'qty[' + index + ']'" :id="'qty_' + index" :placeholder="'Kuantitas ' + row.nama" x-model="barang[index].qty" />
                                 </div>
                             </template>
+                        </div>
+
+
+                        <div class="mb-10">
+                            <input type="text" class="form-control form-control-solid" name="nama_customer" placeholder="Nama Customer" />
                         </div>
 
 
@@ -61,7 +63,7 @@
                 distributor: null,
                 barang:null,
                 async init(){
-                    const distributor = await axios.get('/transaksi/barang-masuk/data-distributor');
+                    const distributor = await axios.get('/transaksi/barang-keluar/data-distributor');
                     this.distributor = distributor.data;
                 },
                 toggleQtyInput(index) {
@@ -71,40 +73,49 @@
                 async updateDetailDistributor() {
                     if (this.selectedDistributor !== null) {
                         const idDistributor = Number(this.selectedDistributor);
-                        const distributorInformation = await axios.get(`/transaksi/barang-masuk/showDistributorDetail?dist_id=${idDistributor}`);
+                        const distributorInformation = await axios.get(`/transaksi/barang-keluar/showDistributorDetail?dist_id=${idDistributor}`);
                         this.detailDistributor = distributorInformation.data;
                     } else {
                         this.detailDistributor = '';
                     }
                 },
                 async save(){
-                    await axios.post('/transaksi/barang-masuk', new FormData(formCreate))
+                    await axios.post('/transaksi/barang-keluar', new FormData(formCreate))
                         .then(() => {
                             Swal.fire({
                                 title: "Berhasil",
                                 icon: "success"
                             }).then(() => {
-                                window.location.href ="{{url('/transaksi/barang-masuk')}}"
+                                window.location.href ="{{url('/transaksi/barang-keluar')}}"
                             })
                         })
                         .catch(error => {
-                            const respError = error.response.data.errors;
-                            Object.keys(respError).map(err => {
-                                const input = formCreate.querySelector(`[name="${err}"]`);
-                                input.classList.add('is-invalid');
-                                if (input.nextElementSibling && input.nextElementSibling.tagName === 'SMALL') {
-                                    input.nextElementSibling.textContent = respError[err][0];
-                                } else {
-                                    const smallElement = document.createElement('small');
-                                    smallElement.classList.add('text-danger');
-                                    smallElement.textContent = respError[err][0];
-                                    input.insertAdjacentElement('afterend', smallElement);
+                                console.log(error.response)
+                                if(error.response.status === 500){
+                                    Swal.fire({
+                                        title: "Error",
+                                        text: "Kuantitas Barang Masuk Melibihi Stok Barang",
+                                        icon: "error"
+                                    });
                                 }
-                            })
+                                const respError = error.response.data.errors;
+                                Object.keys(respError).map(err => {
+                                    const input = formCreate.querySelector(`[name="${err}"]`);
+                                    input.classList.add('is-invalid');
+                                    if (input.nextElementSibling && input.nextElementSibling.tagName === 'SMALL') {
+                                        input.nextElementSibling.textContent = respError[err][0];
+                                    } else {
+                                        const smallElement = document.createElement('small');
+                                        smallElement.classList.add('text-danger');
+                                        smallElement.textContent = respError[err][0];
+                                        input.insertAdjacentElement('afterend', smallElement);
+                                    }
+                                });
                         })
                 }
             }))
         })
+
     </script>
 
 

@@ -19,6 +19,7 @@ return new class extends Migration
                 ->references('id')
                 ->on('distributor')
                 ->onDelete('cascade');
+            $table->string('nama_customer');
             $table->unsignedBigInteger('barang_id');
             $table->foreign('barang_id')
                 ->references('id')
@@ -26,7 +27,6 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->date('tanggal');
             $table->double('qty');
-            $table->double('harga_jual');
             $table->double('total');
             $table->string('user_id');
             $table->boolean('status')->default(0);
