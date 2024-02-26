@@ -148,12 +148,10 @@ class BarangKeluarController extends Controller
 
     public function laporan($tglAwal, $tglAkhir)
     {
-        $laporan = BarangKeluar::with('barang')
+        $laporan = BarangKeluar::with('barangs')
             ->where('status', 1)
             ->whereBetWeen('tanggal', [$tglAwal, $tglAkhir])
             ->get();
-
-
 
         return view('pages.barang-keluar.components.laporan-pdf', compact('laporan'));
     }

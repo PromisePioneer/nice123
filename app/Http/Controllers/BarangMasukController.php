@@ -77,7 +77,7 @@ class BarangMasukController extends Controller
                 ]);
 
                 $findStokBarang = \DB::table('barang')->where('id', $barang_id)->get();
-                foreach ($findStokBarang as $findStok){
+                foreach ($findStokBarang as $findStok) {
                     \DB::table('barang')->where('id', $findStok->id)->update([
                         'stok_barang' => $findStok->stok_barang += $qtyValue
                     ]);
@@ -130,7 +130,7 @@ class BarangMasukController extends Controller
                     ]);
 
                 $findStokBarang = \DB::table('barang')->where('id', $barang_id)->get();
-                foreach ($findStokBarang as $findStok){
+                foreach ($findStokBarang as $findStok) {
                     \DB::table('barang')->where('id', $findStok->id)->update([
                         'stok_barang' => $findStok->stok_barang + $qtyValue
                     ]);
@@ -166,7 +166,7 @@ class BarangMasukController extends Controller
 
     public function laporan($tglAwal, $tglAkhir)
     {
-        $laporan = BarangMasuk::with('barang')
+        $laporan = BarangMasuk::with('barangs')
             ->where('status', 1)
             ->whereBetWeen('tanggal', [$tglAwal, $tglAkhir])
             ->get();

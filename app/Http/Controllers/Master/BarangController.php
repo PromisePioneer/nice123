@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Master;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BarangRequest;
 use App\Models\Barang;
+use App\Models\BarangKeluar;
+use App\Models\BarangMasuk;
 use App\Models\Distributor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,14 +15,19 @@ class BarangController extends Controller
 {
     public function index()
     {
-        return view('pages.master.barang.index');
+        $barangMasuk = BarangMasuk::with('barangs')->get();
+        $barangKeluar = BarangKeluar::with('barangs')->get();
+        return view('pages.master.barang.index', compact(
+            'barangMasuk',
+            'barangKeluar'
+        ));
     }
 
     public function data(Request $request)
     {
         $perPage = $request->input('per_page', 10);
 
-        $barang = Barang::with('distributor','user')->paginate($perPage);
+        $barang = Barang::with('distributor', 'user')->paginate($perPage);
         return response()->json($barang, 200);
     }
 
