@@ -24,13 +24,9 @@ Route::middleware('web')->group(function () {
     Route::prefix('master/barang')->controller(BarangController::class)->group( function () {
         Route::get('/', 'index');
         Route::get('/data', 'data');
-        Route::get('/data-distributor', 'distData');
         Route::get('search', 'search');
-        Route::post('/', 'store');
-        Route::get('/{barang}', 'edit');
-        Route::put('/{barang}','update');
-        Route::delete('/{barang}','destroy');
     });
+
     Route::prefix('transaksi/barang-masuk')->controller(BarangMasukController::class)->group( function () {
         Route::get('/', 'index');
         Route::get('/data', 'data');
@@ -63,7 +59,16 @@ Route::middleware('web')->group(function () {
         Route::delete('/{barangKeluar}','destroy');
         Route::get('/invoice/{barangKeluar}', 'invoice');
         Route::post('/update-status/{barangKeluar}', 'updateStatus');
-        Route::get('/cetak-laporan/{tglAwal}/{tglAkhir}', 'laporan');
+    });
+
+
+    Route::prefix('laporan')->controller(\App\Http\Controllers\LaporanController::class)->group(function () {
+        Route::get('/barang-masuk', 'laporanBarangMasuk');
+        Route::get('/cetak-laporan/barang-masuk/{tglAwal}/{tglAkhir}', 'laporanBarangMasukPdf');
+        Route::get('/barang-masuk/all', 'laporanBarangMasukPdfAll');
+        Route::get('/barang-keluar', 'laporanBarangKeluar');
+        Route::get('/barang-keluar/all', 'laporanBarangKeluarPdfAll');
+        Route::get('/cetak-laporan/barang-keluar/{tglAwal}/{tglAkhir}', 'laporanBarangKeluarPdf');
     });
 });
 
@@ -117,8 +122,14 @@ Route::middleware('role:owner')->group(function () {
         Route::delete('/{distributor}','destroy');
     });
 
-    Route::prefix('laporan')->controller(\App\Http\Controllers\LaporanController::class)->group(function () {
-        Route::get('/barang-masuk', 'laporanBarangMasuk');
-        Route::get('/barang-keluar', 'laporanBarangKeluar');
+    Route::prefix('master/barang')->controller(BarangController::class)->group( function () {
+        Route::get('/', 'index');
+        Route::get('/data', 'data');
+        Route::get('/data-distributor', 'distData');
+        Route::get('search', 'search');
+        Route::post('/', 'store');
+        Route::get('/{barang}', 'edit');
+        Route::put('/{barang}','update');
+        Route::delete('/{barang}','destroy');
     });
 });

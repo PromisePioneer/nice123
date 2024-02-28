@@ -31,7 +31,7 @@
                             </div>
                             <div class="col-md-4">
                                 <a href="#"
-                                   onclick="this.href='/transaksi/barang-keluar/cetak-laporan/'+ document.getElementById('tglAwal').value + '/' + document.getElementById('tglAkhir').value"
+                                   onclick="this.href='/laporan/cetak-laporan/barang-keluar/'+ document.getElementById('tglAwal').value + '/' + document.getElementById('tglAkhir').value"
                                    class="btn btn-primary btn-sm btn-block mt-4" target="_blank">Print</a>
                             </div>
                             </div>
@@ -48,8 +48,7 @@
             </div>
             <div class="card-body py-3">
                 <div class="float-end">
-                    <input type="text" x-model="search" class="form-control form-control form-control-solid"
-                           name="search" placeholder="Cari.." @input.debounce="searchData" />
+                    <a href="{{ url('/laporan/barang-keluar/all') }}" class="btn btn-info btn-sm">Print Semua</a>
                 </div>
                 <table class="table table-striped table-bordered gy-7 gs-7">
                     <thead>
@@ -98,16 +97,6 @@
                     @endforelse
                     </tbody>
                 </table>
-                <div class="float-end">
-                    <ul class="pagination">
-                        <li class="m-1 page-item previous">
-                            <button @click="previousPage" class="btn btn-light btn-sm">Previous</button>
-                        </li>
-                        <li class="m-1 page-item next">
-                            <button @click="nextPage" class="btn btn-light btn-sm">Next</button>
-                        </li>
-                    </ul>
-                </div>
             </div>
         </div>
     </div>

@@ -162,15 +162,4 @@ class BarangMasukController extends Controller
     {
         return view('pages.barang-masuk.components.invoice', compact('barangMasuk'));
     }
-
-
-    public function laporan($tglAwal, $tglAkhir)
-    {
-        $laporan = BarangMasuk::with('barang')
-            ->where('status', 1)
-            ->whereBetWeen('tanggal', [$tglAwal, $tglAkhir])
-            ->get();
-
-        return view('pages.barang-masuk.components.laporan-pdf', compact('laporan'));
-    }
 }
