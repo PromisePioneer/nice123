@@ -33,10 +33,10 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->no }}</td>
-                                <td>{{ $item->nama_customer }}</td>
+                                <td>{{ $item->distributor->nama_distributor }}</td>
                                 <td>{{ $item->barangs->nama }}</td>
                                 <td>{{ $item->qty }}</td>
-                                <td>Rp.{{ number_format($item->barangs->harga_modal) }}</td>
+                                <td>Rp.{{ number_format($item->barangs->harga_jual) }}</td>
                                 <td>Rp.{{ number_format($item->total) }}</td>
                                 <td>{{ $item->user->name }}</td>
                                 @if($item->status === 0)

@@ -37,7 +37,10 @@ class LaporanController extends Controller
 
     public function laporanBarangMasukPdfAll()
     {
-        $laporan = BarangMasuk::all();
+        $laporan = BarangMasuk::with('barangs')
+            ->where('status', 1)
+            ->get();
+
         $pdf = pdf::loadview('pages.laporan.barang-masuk.laporan-pdf-all',['laporan'=> $laporan]);
         $pdf->setPaper([0, 0, 1200, 1200]);
         return $pdf->download('laporan-barang-masuk.pdf');
@@ -58,7 +61,9 @@ class LaporanController extends Controller
 
     public function laporanBarangKeluarPdfAll()
     {
-        $laporan = BarangKeluar::all();
+        $laporan = BarangKeluar::with('barangs')
+            ->where('status', 1)
+            ->get();
         $pdf = pdf::loadview('pages.laporan.barang-keluar.laporan-pdf-all',['laporan'=> $laporan]);
         $pdf->setPaper([0, 0, 1200, 1200]);
         return $pdf->download('laporan-barang-keluar.pdf');

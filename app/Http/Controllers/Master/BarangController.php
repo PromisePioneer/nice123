@@ -15,7 +15,8 @@ class BarangController extends Controller
 {
     public function index()
     {
-        $barangMasuk = BarangMasuk::with('barangs')->get();
+        $barangMasuk = BarangMasuk::with('barangs','distributor')->get();
+
         $barangKeluar = BarangKeluar::with('barangs')->get();
         return view('pages.master.barang.index', compact(
             'barangMasuk',

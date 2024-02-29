@@ -60,7 +60,7 @@
                 <td>{{ $item->distributor->nama_distributor }}</td>
                 <td>{{ $item->barangs->nama }}</td>
                 <td>{{ $item->qty }}</td>
-                <td>{{ $item->barangs->harga }}</td>
+                <td>{{ $item->barangs->harga_modal }}</td>
                 <td>{{ $item->total }}</td>
                 <td>{{ $item->user->name }}</td>
                 @if($item->status === 0)
